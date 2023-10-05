@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.murrrphy.mapper.PostMapper">
+    <!--    动态sql语句实现批量删除-->
+    <delete id="delete">
+        delete from my_posts where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--    动态sql语句更新文章-->
+    <update id="update">
+        update my_posts
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="postContent != null">
+                post_content = #{postContent},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
