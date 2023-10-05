@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@RestController
-@RequestMapping("/posts")
+@Slf4j//控制台输出日志
+@RestController//控制层
+@RequestMapping("/posts")//请求路径
 public class PostController {
 
     @Autowired

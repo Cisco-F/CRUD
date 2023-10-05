@@ -10,26 +10,30 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
+@Service//服务层
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostMapper postMapper;
 
+    //登录
     @Override
     public User login(User user) {
         return postMapper.login(user);
     }
 
+    //查询所有文章
     @Override
     public List<Post> list() {
         return postMapper.list();
     }
 
+    //（批量）删除
     @Override
     public void delete(List<Integer> ids) {
         postMapper.delete(ids);
     }
 
+    //添加文章
     @Override
     public void add(Post post) {
         //设置创建时间和更新时间
@@ -38,11 +42,13 @@ public class PostServiceImpl implements PostService {
         postMapper.add(post);
     }
 
+    //根据id查询
     @Override
     public Post getById(Integer id) {
         return postMapper.getById(id);
     }
 
+    //更新文章
     @Override
     public void update(Post post) {
         postMapper.update(post);

@@ -10,12 +10,15 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
+    //登录
     @Select("select * from user where username = #{username} and password = #{password}")
     User login(User user);
 
+    //查询所有文章
     @Select("select * from my_posts")
     List<Post> list();
 
+    //（批量）删除
     void delete(List<Integer> ids);
 
     //添加文章
@@ -23,9 +26,11 @@ public interface PostMapper {
             "values (#{title}, #{author}, #{postContent}, #{createTime}, #{updateTime})")
     void add(Post post);
 
+    //根据id查询
     @Select("select * from my_posts where id = #{id}")
     Post getById(Integer id);
 
+    //更新文章
     void update(Post post);
 
 }
