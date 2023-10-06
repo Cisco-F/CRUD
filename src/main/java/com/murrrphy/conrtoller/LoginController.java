@@ -30,6 +30,7 @@ public class LoginController {
             Map<String, Object> claims = new HashMap<>();
             claims.put("username", u.getUsername());
             claims.put("password", u.getPassword());
+            claims.put("level", u.getLevel());
             String jwt = generateJwt(claims);
             return Result.success(jwt);
         }

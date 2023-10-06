@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Post {
     private Integer id;//唯一标识
+    private Integer level;//1代表阿摆，2代表阿卷
     private String title;//标题
     private String author;//作者
     private String postContent;//文章内容

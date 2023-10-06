@@ -57,8 +57,8 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
-        //6.登录成功
-        log.info("登录成功！");
+        //6.放行
+        log.info("放行");
         filterChain.doFilter(request, response);
     }
 }
