@@ -15,15 +15,15 @@ public interface PostMapper {
     User login(User user);
 
     //查询所有文章
-    @Select("select * from my_posts where level >= #{level}")
+    @Select("select * from my_posts where level >= #{level} order by update_time desc")
     List<Post> list(Integer level);
 
     //（批量）删除
     void delete(List<Integer> ids);
 
     //添加文章
-    @Insert("insert into my_posts(title, author, post_content, create_time, update_time)" +
-            "values (#{title}, #{author}, #{postContent}, #{createTime}, #{updateTime})")
+    @Insert("insert into my_posts(title, id, author, post_content, create_time, update_time)" +
+            "values (#{title}, #{author}, #{id}, #{postContent}, #{createTime}, #{updateTime})")
     void add(Post post);
 
     //根据id查询

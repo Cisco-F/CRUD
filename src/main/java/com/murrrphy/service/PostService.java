@@ -1,6 +1,7 @@
 package com.murrrphy.service;
 
 import com.murrrphy.pojo.Post;
+import com.murrrphy.pojo.Result;
 import com.murrrphy.pojo.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,5 +25,5 @@ public interface PostService {
     Post getById(Integer id);
 
     //更新文章
-    void update(Post post);
+    Result update(Post post, HttpServletRequest request);
 }

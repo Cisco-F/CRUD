@@ -2,6 +2,7 @@ package com.murrrphy.service.impl;
 
 import com.murrrphy.mapper.PostMapper;
 import com.murrrphy.pojo.Post;
+import com.murrrphy.pojo.Result;
 import com.murrrphy.pojo.User;
 import com.murrrphy.service.PostService;
 import com.murrrphy.utils.JwtUtils;
@@ -26,7 +27,7 @@ public class PostServiceImpl implements PostService {
     //查询所有文章
     @Override
     public List<Post> list(HttpServletRequest request) {
-        //获取token中的level
+        //获取当前登录用户的level
         int level = JwtUtils.getLevel(request);
         //根据level显示文章，1（阿摆）比2（阿卷）权限大
         return postMapper.list(level);
@@ -44,6 +45,8 @@ public class PostServiceImpl implements PostService {
         //设置创建时间和更新时间
         post.setCreateTime(LocalDateTime.now());
         post.setUpdateTime(LocalDateTime.now());
+        //文章默认权限level为2 即所有人可见
+        post.setId(2);
         postMapper.add(post);
     }
 
@@ -55,7 +58,20 @@ public class PostServiceImpl implements PostService {
 
     //更新文章
     @Override
-    public void update(Post post) {
-        postMapper.update(post);
+    public Result update(Post post, HttpServletRequest request) {
+        //获取待更新文章的level
+        Post targetPost = postMapper.getById(post.getId());
+        int currentPostLevel = targetPost.getLevel();
+        //获得当前登录用户的level
+        int currentUserLevel = JwtUtils.getLevel(request);
+        //判断是否有权限操作
+        if(currentUserLevel <= currentPostLevel){//有权限
+            post.setUpdateTime(LocalDateTime.now());//修改更新时间为现在
+            postMapper.update(post);
+            return Result.success();
+        }
+        else{//无权限
+            return Result.error("您的权限不够！！");
+        }
     }
 }

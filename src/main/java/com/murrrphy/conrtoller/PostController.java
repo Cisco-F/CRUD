@@ -3,7 +3,6 @@ package com.murrrphy.conrtoller;
 import com.murrrphy.pojo.Post;
 import com.murrrphy.pojo.Result;
 import com.murrrphy.service.PostService;
-import com.murrrphy.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,11 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    //查询所有文章
+    //查询所有文章,结果按更新时间降序排列
     public Result list(HttpServletRequest request){
         //输出日志
         log.info("查询所有文章");
-        //调用service层，使用集合接收查询到的数据
+        //调用service层，先获得当前登录用户的level，再使用集合接收查询到的数据
         List<Post> postList = postService.list(request);
         return Result.success(postList);
     }
@@ -61,11 +60,11 @@ public class PostController {
 
     //修改文章
     @PutMapping
-    public Result update(@RequestBody Post post){
+    public Result update(@RequestBody Post post, HttpServletRequest request){
         //输出日志
         log.info("修改文章：{}", post.getId());
-        //调用service层修改updateTime
-        postService.update(post);
-        return Result.success();
+        //调用service层判断是否有权限修改，若有同时修改updateTime
+        return postService.update(post, request);
     }
+
 }
