@@ -5,11 +5,9 @@ import com.murrrphy.pojo.User;
 import com.murrrphy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,4 +49,42 @@ public class UserController {
         userService.register(user);
         return Result.success();
     }
+
+    //注销功能
+    @DeleteMapping("/{id}")
+    public Result logOff(@PathVariable Integer id, HttpServletRequest request){
+        //输出日志
+        log.info("注销用户：{}", id);
+        //调用service层
+        return userService.logOff(id, request);
+    }
+
+    //查看所有用户（只有管理员有权限）
+    @GetMapping
+    public Result list(HttpServletRequest request){
+        //输出日志
+        log.info("查询所有用户");
+        //调用service层
+        return userService.list(request);
+    }
+
+    //根据id查询用户
+    @GetMapping("/{id}")
+    public Result getById(@PathVariable Integer id){
+        //输出日志
+        log.info("查询用户：{}", id);
+        //调用service层
+        User user = userService.getById(id);
+        return Result.success(user);
+    }
+
+    //修改密码
+    @PutMapping
+    public Result updatePassword(@RequestBody User user, HttpServletRequest request){
+        //输出日志
+        log.info("修改密码，用户：{}", user);
+        //调用service层
+        return userService.updatePassword(user, request);
+    }
+
 }

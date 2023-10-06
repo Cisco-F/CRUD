@@ -6,6 +6,7 @@ import com.murrrphy.pojo.Result;
 import com.murrrphy.pojo.User;
 import com.murrrphy.service.PostService;
 import com.murrrphy.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> list(HttpServletRequest request) {
         //获取当前登录用户的level
-        int level = JwtUtils.getLevel(request);
+        Claims claims = JwtUtils.getData(request);
+        int level = (Integer) claims.get("level");
         //根据level显示文章，1（阿摆）比2（阿卷）权限大
         return postMapper.list(level);
     }
@@ -57,7 +59,8 @@ public class PostServiceImpl implements PostService {
         Post targetPost = postMapper.getById(post.getId());
         int currentPostLevel = targetPost.getLevel();
         //获得当前登录用户的level
-        int currentUserLevel = JwtUtils.getLevel(request);
+        Claims claims = JwtUtils.getData(request);
+        int currentUserLevel = (Integer) claims.get("level");
         //判断是否有权限操作
         if(currentUserLevel <= currentPostLevel){//有权限
             post.setUpdateTime(LocalDateTime.now());//修改更新时间为现在

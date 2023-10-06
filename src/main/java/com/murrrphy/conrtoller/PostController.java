@@ -66,5 +66,4 @@ public class PostController {
         //调用service层判断是否有权限修改，若有同时修改updateTime
         return postService.update(post, request);
     }
-
 }

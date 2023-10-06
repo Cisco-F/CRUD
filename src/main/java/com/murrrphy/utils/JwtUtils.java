@@ -14,31 +14,26 @@ public class JwtUtils {
 
     //生成jwt令牌
     public static String generateJwt(Map<String, Object> claims){
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .addClaims(claims)//添加jwt携带的信息
                 .signWith(SignatureAlgorithm.HS256, signKey)//签名算法和签名密钥
                 .setExpiration(new Date(System.currentTimeMillis() + expire))//设置过期时间
-                .compact();//将结果转换为字符串
-        return jwt;
+                .compact();
     }
 
-    //解析jwt令牌
+    //解析jwt令牌，获得payload中装载的所有信息
     public static Claims parseJwt(String jwt){
-        Claims claims = Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(signKey)//签名密钥
                 .parseClaimsJws(jwt)
-                .getBody();//得到json数据
-        return claims;
+                .getBody();
     }
 
-    //获取payload中装载的信息(level)
-    public static Integer getLevel(HttpServletRequest request){
+    //获取payload中装载的信息
+    public static Claims getData(HttpServletRequest request){
         //获取token
         String jwt = request.getHeader("token");
         //获取payload中的信息
-        Claims claims = parseJwt(jwt);
-        //获取level
-        Integer level = (Integer) claims.get("level");
-        return level;
+        return parseJwt(jwt);
     }
 }
