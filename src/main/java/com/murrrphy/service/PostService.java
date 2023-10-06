@@ -9,8 +9,6 @@ import java.util.List;
 
 //服务层接口
 public interface PostService {
-    //登录
-    User login(User user);
 
     //查询所有文章
     List<Post> list(HttpServletRequest request);

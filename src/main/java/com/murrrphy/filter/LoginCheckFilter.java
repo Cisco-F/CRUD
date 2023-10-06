@@ -24,9 +24,13 @@ public class LoginCheckFilter implements Filter {
         String url = request.getRequestURL().toString();
         log.info("请求的url为：{}", url);
 
-        //2.判断是否为登录操作
+        //2.判断是否为登录或注册操作
         if(url.contains("login")){
             log.info("登录操作，直接放行");
+            filterChain.doFilter(request, response);
+            return;
+        } else if (url.contains("register")) {
+            log.info("注册操作，直接放行");
             filterChain.doFilter(request, response);
             return;
         }

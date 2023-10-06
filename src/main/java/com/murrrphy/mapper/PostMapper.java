@@ -10,10 +10,6 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
-    //登录
-    @Select("select * from user where username = #{username} and password = #{password}")
-    User login(User user);
-
     //查询所有文章
     @Select("select * from my_posts where level >= #{level} order by update_time desc")
     List<Post> list(Integer level);
@@ -33,4 +29,8 @@ public interface PostMapper {
     //更新文章
     void update(Post post);
 
+    //注册用户
+    @Insert("insert into user(username, password, level)" +
+            "values (#{username}, #{password}, #{level})")
+    void register(User user);
 }

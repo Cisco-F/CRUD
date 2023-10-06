@@ -18,12 +18,6 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostMapper postMapper;
 
-    //登录
-    @Override
-    public User login(User user) {
-        return postMapper.login(user);
-    }
-
     //查询所有文章
     @Override
     public List<Post> list(HttpServletRequest request) {
