@@ -3,10 +3,12 @@ package com.murrrphy.conrtoller;
 import com.murrrphy.pojo.Post;
 import com.murrrphy.pojo.Result;
 import com.murrrphy.service.PostService;
+import com.murrrphy.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j//控制台输出日志
@@ -18,12 +20,12 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    //查询所有文章   后续转为分页查询
-    public Result list(){
+    //查询所有文章
+    public Result list(HttpServletRequest request){
         //输出日志
         log.info("查询所有文章");
         //调用service层，使用集合接收查询到的数据
-        List<Post> postList = postService.list();
+        List<Post> postList = postService.list(request);
         return Result.success(postList);
     }
 

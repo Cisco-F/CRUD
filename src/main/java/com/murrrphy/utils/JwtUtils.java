@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,5 +29,16 @@ public class JwtUtils {
                 .parseClaimsJws(jwt)
                 .getBody();//得到json数据
         return claims;
+    }
+
+    //获取payload中装载的信息(level)
+    public static Integer getLevel(HttpServletRequest request){
+        //获取token
+        String jwt = request.getHeader("token");
+        //获取payload中的信息
+        Claims claims = parseJwt(jwt);
+        //获取level
+        Integer level = (Integer) claims.get("level");
+        return level;
     }
 }

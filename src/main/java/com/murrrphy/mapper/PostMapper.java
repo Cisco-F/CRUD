@@ -15,8 +15,8 @@ public interface PostMapper {
     User login(User user);
 
     //查询所有文章
-    @Select("select * from my_posts")
-    List<Post> list();
+    @Select("select * from my_posts where level >= #{level}")
+    List<Post> list(Integer level);
 
     //（批量）删除
     void delete(List<Integer> ids);

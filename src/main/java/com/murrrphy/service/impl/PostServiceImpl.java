@@ -4,9 +4,11 @@ import com.murrrphy.mapper.PostMapper;
 import com.murrrphy.pojo.Post;
 import com.murrrphy.pojo.User;
 import com.murrrphy.service.PostService;
+import com.murrrphy.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,8 +25,11 @@ public class PostServiceImpl implements PostService {
 
     //查询所有文章
     @Override
-    public List<Post> list() {
-        return postMapper.list();
+    public List<Post> list(HttpServletRequest request) {
+        //获取token中的level
+        int level = JwtUtils.getLevel(request);
+        //根据level显示文章，1（阿摆）比2（阿卷）权限大
+        return postMapper.list(level);
     }
 
     //（批量）删除

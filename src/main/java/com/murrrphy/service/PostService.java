@@ -3,6 +3,7 @@ package com.murrrphy.service;
 import com.murrrphy.pojo.Post;
 import com.murrrphy.pojo.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 //服务层接口
@@ -11,7 +12,7 @@ public interface PostService {
     User login(User user);
 
     //查询所有文章
-    List<Post> list();
+    List<Post> list(HttpServletRequest request);
 
     //（批量）删除
     void delete(List<Integer> ids);
