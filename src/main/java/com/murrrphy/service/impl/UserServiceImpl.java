@@ -40,24 +40,17 @@ public class UserServiceImpl implements UserService {
         String username = (String) claims.get("username");
         String password = (String) claims.get("password");
         User u = userMapper.getById(id);
-        //先判断是不是管理员
-        if(currentUserLevel == 0){
-            if(u == null){//用户不存在
-                return Result.error("用户不存在！");
-            }else {//存在用户则正常删除
-                userMapper.logOff(id);
-                return Result.success();
-            }
-        } else{//如果不是管理员，但用户名和密码和数据库对应，也可以注销自己的账号
 
-            if(u == null){//请求的id对应用户可能不存在
-                return Result.error("用户不存在！");
-            } else if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                userMapper.logOff(id);
-                return Result.success();
-            }else {//以上情况均不符合，禁止操作
-                return Result.error("权限不足！");
-            }
+        if(u == null){//请求的id对应用户可能不存在
+            return Result.error("用户不存在！");
+        } else if (currentUserLevel == 0) {//请求用户存在，当前登录为管理员则正常删除
+            userMapper.logOff(id);
+            return Result.success();
+        } else if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+            userMapper.logOff(id);
+            return Result.success();
+        }else {//以上情况均不符合，禁止操作
+            return Result.error("权限不足！");
         }
     }
 
