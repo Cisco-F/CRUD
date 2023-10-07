@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 userMapper.logOff(id);
                 return Result.success();
             }
-        } else{//如果不是管理员，但输入正确的用户名和密码，也可以注销自己的账号
+        } else{//如果不是管理员，但用户名和密码和数据库对应，也可以注销自己的账号
 
             if(u == null){//请求的id对应用户可能不存在
                 return Result.error("用户不存在！");
@@ -84,20 +84,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updatePassword(User user, HttpServletRequest request) {
-        //先判断是不是管理员
+        //获取当前登录用户信息
         Claims claims = JwtUtils.getData(request);
         int currentUserLevel = (Integer) claims.get("level");
-        String username = (String) claims.get("username");
-        String password = (String) claims.get("password");
+        int id = (Integer) claims.get("id");
+        //在数据库中查询到该用户
+        User u = userMapper.getById(id);
 
         if(currentUserLevel == 0){
             userMapper.updatePassword(user);
             return Result.success();
-        }else if(user.getPassword().equals(password) && user.getUsername().equals(username)){
+        }else {
             userMapper.updatePassword(user);
             return Result.success();
-        }else {
-            return Result.error("权限不足！");
         }
     }
 }
