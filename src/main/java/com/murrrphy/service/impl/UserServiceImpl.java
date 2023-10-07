@@ -75,21 +75,26 @@ public class UserServiceImpl implements UserService {
         return userMapper.getById(id);
     }
 
+    //修改密码
     @Override
     public Result updatePassword(User user, HttpServletRequest request) {
         //获取当前登录用户信息
         Claims claims = JwtUtils.getData(request);
         int currentUserLevel = (Integer) claims.get("level");
+        String username = (String) claims.get("username");
+        String password = (String) claims.get("password");
         int id = (Integer) claims.get("id");
         //在数据库中查询到该用户
         User u = userMapper.getById(id);
 
-        if(currentUserLevel == 0){
+        if(currentUserLevel == 0){//管理员
+            userMapper.updatePassword(user);
+            return Result.success();
+        }else if(u.getPassword().equals(password) && u.getUsername().equals(username)){//当前登录用户的信息和根据id从数据库中查询到的用户信息一致
             userMapper.updatePassword(user);
             return Result.success();
         }else {
-            userMapper.updatePassword(user);
-            return Result.success();
+            return Result.error("权限不足！");
         }
     }
 }
