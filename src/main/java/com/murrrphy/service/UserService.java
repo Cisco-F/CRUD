@@ -10,7 +10,7 @@ public interface UserService {
     User login(User user);
 
     //注册
-    void register(User user);
+    Result register(User user);
 
     //注销
     Result logOff(Integer id, HttpServletRequest request);

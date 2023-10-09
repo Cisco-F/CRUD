@@ -25,10 +25,17 @@ public class UserServiceImpl implements UserService {
 
     //注册
     @Override
-    public void register(User user) {
-        //设置默认level为2
-        user.setLevel(2);
-        userMapper.register(user);
+    public Result register(User user) {
+        //用户名重复则注册失败
+        User u = userMapper.getByUsername(user);
+        if(u != null){
+            return Result.error("用户名已存在！");
+        }else {
+            //设置默认level为2
+            user.setLevel(2);
+            userMapper.register(user);
+            return Result.success();
+        }
     }
 
     //注销功能

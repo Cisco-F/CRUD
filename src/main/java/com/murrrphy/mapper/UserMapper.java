@@ -31,4 +31,8 @@ public interface UserMapper {
     //修改密码
     @Update("update user set password = #{password} where id = #{id}")
     void updatePassword(User user);
+
+    //根据用户名查询
+    @Select("select * from user where username = #{username}")
+    User getByUsername(User user);
 }

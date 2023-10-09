@@ -47,8 +47,7 @@ public class UserController {
         //输出日志
         log.info("注册用户：{}", user);
         //调用service层
-        userService.register(user);
-        return Result.success();
+        return userService.register(user);
     }
 
     //注销功能
