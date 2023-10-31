@@ -30,11 +30,11 @@ public class PostController {
 
     //批量删除文章
     @DeleteMapping("/{ids}")
-    public Result delete(@PathVariable List<Integer> ids){
+    public Result delete(@PathVariable List<Integer> ids, HttpServletRequest request){
         //输出日志
         log.info("根据id删除文章：{}", ids);
         //调用service层
-        postService.delete(ids);
+        postService.delete(ids, request);
         return Result.success();//不需要返回数据
     }
 
@@ -50,12 +50,12 @@ public class PostController {
 
     //根据id查询文章，用于修改或删除操作之前的回显
     @GetMapping("/{id}")
-    public Result getById(@PathVariable Integer id){
+    public Result getById(@PathVariable Integer id, HttpServletRequest request){
         //输出日志
         log.info("查询id为{}的文章", id);
         //调用service层
-        Post post = postService.getById(id);//查询到的数据封装到实例对象
-        return Result.success(post);
+        return postService.getById(id, request);//查询到的数据封装到实例对象
+
     }
 
     //修改文章

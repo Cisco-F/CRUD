@@ -9,6 +9,7 @@
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
+        >= #{currentUserLevel}
     </delete>
 
     <!--    动态sql语句更新文章-->

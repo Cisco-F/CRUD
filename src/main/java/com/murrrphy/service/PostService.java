@@ -14,13 +14,13 @@ public interface PostService {
     List<Post> list(HttpServletRequest request);
 
     //（批量）删除
-    void delete(List<Integer> ids);
+    void delete(List<Integer> ids, HttpServletRequest request);
 
     //添加文章
     void add(Post post);
 
     //根据id查询
-    Post getById(Integer id);
+    Result getById(Integer id, HttpServletRequest request);
 
     //更新文章
     Result update(Post post, HttpServletRequest request);

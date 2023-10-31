@@ -3,7 +3,6 @@ package com.murrrphy.service.impl;
 import com.murrrphy.mapper.PostMapper;
 import com.murrrphy.pojo.Post;
 import com.murrrphy.pojo.Result;
-import com.murrrphy.pojo.User;
 import com.murrrphy.service.PostService;
 import com.murrrphy.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
@@ -31,8 +30,10 @@ public class PostServiceImpl implements PostService {
 
     //（批量）删除
     @Override
-    public void delete(List<Integer> ids) {
-        postMapper.delete(ids);
+    public void delete(List<Integer> ids, HttpServletRequest request) {
+        Claims claims = JwtUtils.getData(request);
+        int currentUserLevel = (Integer) claims.get("level");
+        postMapper.delete(ids, currentUserLevel);
     }
 
     //添加文章
@@ -48,8 +49,17 @@ public class PostServiceImpl implements PostService {
 
     //根据id查询
     @Override
-    public Post getById(Integer id) {
-        return postMapper.getById(id);
+    public Result getById(Integer id, HttpServletRequest request) {
+        Claims claims = JwtUtils.getData(request);
+        int currentUserLevel = (Integer) claims.get("level");
+        Post post = postMapper.getById(id);
+        int currentPostLevel = post.getLevel();
+        if(currentPostLevel < currentUserLevel) {
+            return Result.success(post);
+        }
+        else {
+            return Result.error("NOT AUTHORIZED");
+        }
     }
 
     //更新文章

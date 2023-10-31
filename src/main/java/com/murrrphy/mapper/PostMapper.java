@@ -15,7 +15,7 @@ public interface PostMapper {
     List<Post> list(Integer level);
 
     //（批量）删除
-    void delete(List<Integer> ids);
+    void delete(List<Integer> ids, int currentUserLevel);
 
     //添加文章
     @Insert("insert into my_posts(title, id, author, post_content, create_time, update_time)" +
